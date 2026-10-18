@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { User } from "../models/user.model.js";
 
 const registerUser = async (req, res) => {
@@ -5,30 +6,36 @@ const registerUser = async (req, res) => {
         const { username, email, password } = req.body;
 
         if (!username || !email || !password) {
-            return res.status(400).json({ message: "All fields are important >:/"})
+            return res.status(400).json({ message: "Todos los campos son obligatorios" });
         }
 
-        const existing = await User.findOnes({email: email.toLowerCase()});
+        if (password.length < 6 || password.length > 50) {
+            return res.status(400).json({ message: "La contraseña debe tener entre 6 y 50 caracteres" });
+        }
+
+        const existing = await User.findOne({
+            $or: [{ email: email.toLowerCase() }, { username: username.toLowerCase() }]
+        });
         if (existing) {
-            return res.status(400).json({ message: "User already exists"})
+            return res.status(409).json({ message: "El usuario o el correo ya existe" });
         }
 
-        const user = await User.create ({
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = await User.create({
             username,
-            email: email.toLowerCase(),
-            password,
+            email,
+            password: hashedPassword,
             loggedIn: false,
         });
 
         res.status(201).json({
-            message: "User registered",
-            user: { id: user._id, email, username: user.username}
+            message: "Usuario registrado",
+            user: { id: user._id, email: user.email, username: user.username }
         });
     } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message});
+        res.status(500).json({ message: "Error interno del servidor", error: error.message });
     }
 };
 
-export {
-    registerUser
-};
+export { registerUser };

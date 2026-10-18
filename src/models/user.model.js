@@ -9,14 +9,13 @@ const userSchema = new Schema(
             lowercase: true,
             trim: true,
             minLength: 1,
-            maxLegth: 30
+            maxLength: 30
         },
 
         password: {
             type: String,
             required: true,
-            minLength: 6,
-            maxLegth: 50
+            minLength: 6
         },
 
         email: {
@@ -24,8 +23,13 @@ const userSchema = new Schema(
             required: true,
             unique: true,
             lowercase: true,
-            trim: true,
-         }
+            trim: true
+        },
+
+        loggedIn: {
+            type: Boolean,
+            default: false
+        }
     },
 
     {
