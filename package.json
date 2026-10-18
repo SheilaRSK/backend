@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "mashe market",
+  "homepage": "https://github.com/SheilaRSK/backend#readme",
+  "bugs": {
+    "url": "https://github.com/SheilaRSK/backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SheilaRSK/backend.git"
+  },
+  "license": "ISC",
+  "author": "Sheila",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "mongoose": "^9.11.2",
+    "nodemon": "^3.1.14"
+  }
+}
